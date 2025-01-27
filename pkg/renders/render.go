@@ -6,22 +6,27 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+
+	"github.com/mauFade/bookings-u/pkg/config"
 )
 
+var app *config.AppConfig
+
+func NewTemplates(a *config.AppConfig) {
+	app = a
+}
+
 func RenderTemplate(w http.ResponseWriter, tmpl string) {
-	tc, err := createTemplate()
-	if err != nil {
-		log.Fatal(err)
-	}
+	tc := app.TemplateCache
 
 	t, ok := tc[tmpl]
 	if !ok {
-		log.Fatal(err)
+		log.Fatal("Couldn't get from template cache")
 	}
 
 	buf := new(bytes.Buffer)
 
-	err = t.Execute(buf, nil)
+	err := t.Execute(buf, nil)
 	if err != nil {
 		log.Println(err)
 	}
@@ -32,7 +37,7 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 	}
 }
 
-func createTemplate() (map[string]*template.Template, error) {
+func CreateTemplate() (map[string]*template.Template, error) {
 	myCache := map[string]*template.Template{}
 
 	pages, err := filepath.Glob("./templates/*.page.tmpl")
