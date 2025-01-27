@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/mauFade/bookings-u/pkg/config"
+	"github.com/mauFade/bookings-u/pkg/models"
 	"github.com/mauFade/bookings-u/pkg/renders"
 )
 
@@ -24,9 +25,15 @@ func NewHandlers(r *Repository) {
 }
 
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
-	renders.RenderTemplate(w, "home.page.tmpl")
+	renders.RenderTemplate(w, "home.page.tmpl", &models.TemplateData{})
 }
 
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
-	renders.RenderTemplate(w, "about.page.tmpl")
+	strMap := map[string]string{
+		"text": "Hello, this is the about page",
+	}
+
+	renders.RenderTemplate(w, "about.page.tmpl", &models.TemplateData{
+		StringMap: strMap,
+	})
 }

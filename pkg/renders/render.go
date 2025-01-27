@@ -8,7 +8,10 @@ import (
 	"path/filepath"
 
 	"github.com/mauFade/bookings-u/pkg/config"
+	"github.com/mauFade/bookings-u/pkg/models"
 )
+
+var functions = template.FuncMap{}
 
 var app *config.AppConfig
 
@@ -16,8 +19,24 @@ func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 
-func RenderTemplate(w http.ResponseWriter, tmpl string) {
-	tc := app.TemplateCache
+func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+	return td
+}
+
+func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
+	var tc map[string]*template.Template
+
+	if app.UseCache {
+		tc = app.TemplateCache
+	} else {
+		t, err := CreateTemplate()
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		tc = t
+	}
 
 	t, ok := tc[tmpl]
 	if !ok {
@@ -26,7 +45,9 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 
 	buf := new(bytes.Buffer)
 
-	err := t.Execute(buf, nil)
+	td = AddDefaultData(td)
+
+	err := t.Execute(buf, td)
 	if err != nil {
 		log.Println(err)
 	}
