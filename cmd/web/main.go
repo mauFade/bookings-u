@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
+	"github.com/alexedwards/scs/v2"
 	"github.com/mauFade/bookings-u/pkg/config"
 	"github.com/mauFade/bookings-u/pkg/handlers"
 	"github.com/mauFade/bookings-u/pkg/renders"
@@ -12,8 +14,17 @@ import (
 
 const PORT = ":9091"
 
+var app config.AppConfig
+var session *scs.SessionManager
+
 func main() {
-	var app config.AppConfig
+	app.InProduction = false
+
+	session = scs.New()
+	session.Lifetime = 24 * time.Hour
+	session.Cookie.Persist = true
+	session.Cookie.SameSite = http.SameSiteLaxMode
+	session.Cookie.Secure = app.InProduction
 
 	tc, err := renders.CreateTemplate()
 
@@ -29,7 +40,7 @@ func main() {
 
 	renders.NewTemplates(&app)
 
-	fmt.Println(fmt.Sprintf("Staring application on port %s", PORT))
+	fmt.Printf("Staring application on port %s", PORT)
 
 	srv := &http.Server{
 		Addr:    PORT,
