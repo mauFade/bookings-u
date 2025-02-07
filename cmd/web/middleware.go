@@ -18,3 +18,7 @@ func NoSurf(next http.Handler) http.Handler {
 
 	return ns
 }
+
+func SessionLoad(n http.Handler) http.Handler {
+	return session.LoadAndSave(n)
+}
