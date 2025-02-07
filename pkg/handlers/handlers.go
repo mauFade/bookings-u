@@ -1,12 +1,20 @@
 package handlers
 
 import (
+	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/mauFade/bookings-u/pkg/config"
 	"github.com/mauFade/bookings-u/pkg/models"
 	"github.com/mauFade/bookings-u/pkg/renders"
 )
+
+type jsonResponse struct {
+	Ok      bool   `json:"ok"`
+	Message string `json:"message"`
+}
 
 type Repository struct {
 	App *config.AppConfig
@@ -62,7 +70,26 @@ func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Posted"))
+	start := r.Form.Get("start")
+	end := r.Form.Get("end")
+
+	w.Write([]byte(fmt.Sprintf("Start date %s, end date %s", start, end)))
+}
+
+func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
+	res := jsonResponse{
+		Ok:      true,
+		Message: "available!",
+	}
+
+	output, err := json.MarshalIndent(res, "", "    ")
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(output)
 }
 
 func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
