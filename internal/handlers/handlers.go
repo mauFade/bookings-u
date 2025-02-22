@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/mauFade/bookings-u/pkg/config"
-	"github.com/mauFade/bookings-u/pkg/models"
-	"github.com/mauFade/bookings-u/pkg/renders"
+	"github.com/mauFade/bookings-u/internal/config"
+	"github.com/mauFade/bookings-u/internal/models"
+	"github.com/mauFade/bookings-u/internal/renders"
 )
 
 type jsonResponse struct {

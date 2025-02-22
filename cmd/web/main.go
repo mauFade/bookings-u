@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/mauFade/bookings-u/pkg/config"
-	"github.com/mauFade/bookings-u/pkg/handlers"
-	"github.com/mauFade/bookings-u/pkg/renders"
+	"github.com/mauFade/bookings-u/internal/config"
+	"github.com/mauFade/bookings-u/internal/handlers"
+	"github.com/mauFade/bookings-u/internal/renders"
 )
 
 const PORT = ":9091"

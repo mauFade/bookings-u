@@ -8,11 +8,11 @@ import (
 	"path/filepath"
 
 	"github.com/justinas/nosurf"
-	"github.com/mauFade/bookings-u/pkg/config"
-	"github.com/mauFade/bookings-u/pkg/models"
+	"github.com/mauFade/bookings-u/internal/config"
+	"github.com/mauFade/bookings-u/internal/models"
 )
 
-var functions = template.FuncMap{}
+// var functions = template.FuncMap{}
 
 var app *config.AppConfig
 
