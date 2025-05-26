@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/mauFade/bookings-u/internal/config"
+	"github.com/mauFade/bookings-u/internal/forms"
 	"github.com/mauFade/bookings-u/internal/models"
 	"github.com/mauFade/bookings-u/internal/renders"
 )
@@ -54,7 +55,13 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	renders.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{})
+	renders.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+		Form: forms.New(nil),
+	})
+}
+
+func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
+
 }
 
 func (m *Repository) Generals(w http.ResponseWriter, r *http.Request) {
